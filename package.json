@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start --port 3001",
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "^15.5.22",
+    "next": "15.5.22",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },

@@ -1,0 +1,11 @@
+meta {
+  name: WFP Prices
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/api/wfp-prices?commodity=Maize&limit=20
+  body: none
+  auth: none
+}

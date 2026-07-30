@@ -1,4 +1,4 @@
-import { commodities, optionsResponse, randomPrice, withCors } from "../_utils";
+import { commodities, optionsResponse, randomPrice, toTzs, withCors } from "../_utils";
 
 export const dynamic = "force-dynamic";
 
@@ -7,13 +7,18 @@ export function GET() {
 
   return withCors({
     platform: "Platform A",
-    currency: "USD",
-    items: commodities.map((commodity) => ({
-      symbol: commodity.symbol,
-      price: randomPrice(commodity.basePrice),
-      volume: Math.round(commodity.volume * (1 + (Math.random() - 0.5) * 0.12)),
-      timestamp
-    }))
+    currencies: ["TZS", "USD"],
+    items: commodities.map((commodity) => {
+      const priceUsd = randomPrice(commodity.basePrice);
+
+      return {
+        symbol: commodity.symbol,
+        price_tzs: toTzs(priceUsd),
+        price_usd: priceUsd,
+        volume: Math.round(commodity.volume * (1 + (Math.random() - 0.5) * 0.12)),
+        timestamp
+      };
+    })
   });
 }
 

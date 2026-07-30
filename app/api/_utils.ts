@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const TZS_PER_USD = 2600;
+
 export const commodities = [
   { symbol: "MAIZE", basePrice: 42.5, volume: 1200 },
   { symbol: "RICE", basePrice: 55.2, volume: 900 },
@@ -34,4 +36,8 @@ export function optionsResponse() {
 export function randomPrice(basePrice: number) {
   const change = 1 + (Math.random() - 0.5) * 0.08;
   return Number((basePrice * change).toFixed(2));
+}
+
+export function toTzs(usdPrice: number) {
+  return Number((usdPrice * TZS_PER_USD).toFixed(2));
 }
