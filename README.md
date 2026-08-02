@@ -1,6 +1,6 @@
 # Platform A
 
-Simulated market-data API returning commodity prices in USD.
+Simulated market-data API returning commodity prices with TZS and corresponding USD values.
 
 ## Endpoints
 
