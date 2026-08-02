@@ -1,4 +1,4 @@
-import { PRICE_DATE, commodities, optionsResponse, toTzs, withCors } from "../_utils";
+import { commodities, optionsResponse, toTzs, withCors } from "../_utils";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +16,8 @@ export function GET() {
         price_tzs: toTzs(priceUsd),
         price_usd: priceUsd,
         volume: commodity.volume,
-        price_date: PRICE_DATE,
+        market: commodity.market,
+        price_date: commodity.priceDate,
         timestamp
       };
     })
