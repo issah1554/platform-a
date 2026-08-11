@@ -1,5 +1,5 @@
--- Platform A Supabase Database Schema (Pure DDL)
--- Defines table structure, types, and security policies for platform_a_prices
+-- Migration 01: Initial Schema Definition (Pure DDL)
+-- Created: 2026-08-11
 
 -- 1. Create table platform_a_prices
 CREATE TABLE IF NOT EXISTS public.platform_a_prices (
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS public.platform_a_prices (
 -- 2. Enable Row Level Security (RLS)
 ALTER TABLE public.platform_a_prices ENABLE ROW LEVEL SECURITY;
 
--- 3. Create RLS policies for public access (read, insert, update, delete)
+-- 3. Create RLS policies for public access
 CREATE POLICY "Allow public read access" 
 ON public.platform_a_prices FOR SELECT 
 USING (true);
