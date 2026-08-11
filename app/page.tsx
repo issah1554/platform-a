@@ -37,6 +37,30 @@ export default function PlatformADashboard() {
   const [apiLoading, setApiLoading] = useState(false);
   const [apiLatency, setApiLatency] = useState<number | null>(null);
 
+  // Seeding State
+  const [seedStatus, setSeedStatus] = useState<{ loading: boolean; message: string | null; error: string | null }>({
+    loading: false,
+    message: null,
+    error: null
+  });
+
+  const seedMorogoro = async () => {
+    if (!confirm("This will insert ~178,000 Morogoro CSV rows into the unified platform_a_prices table. This may take a few minutes. Continue?")) return;
+    setSeedStatus({ loading: true, message: null, error: null });
+    try {
+      const res = await fetch("/api/seed-morogoro", { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        setSeedStatus({ loading: false, message: data.message, error: null });
+        fetchPrices();
+      } else {
+        setSeedStatus({ loading: false, message: null, error: data.error || "Seeding failed" });
+      }
+    } catch (err: any) {
+      setSeedStatus({ loading: false, message: null, error: err.message });
+    }
+  };
+
   const fetchPrices = async () => {
     setLoading(true);
     try {
@@ -228,9 +252,17 @@ export default function PlatformADashboard() {
             </select>
           </div>
 
-          <div style={{ display: "flex", gap: 10 }}>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <button className="btn btn-secondary" onClick={fetchPrices}>
               Refresh Feed
+            </button>
+            <button
+              className="btn btn-primary"
+              style={{ background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)", boxShadow: "0 0 15px rgba(245,158,11,0.3)" }}
+              onClick={seedMorogoro}
+              disabled={seedStatus.loading}
+            >
+              {seedStatus.loading ? "Seeding... (this may take minutes)" : "Seed CSV Into Unified Prices"}
             </button>
             <button className="btn btn-primary" onClick={handleOpenAdd}>
               + Add Commodity Price
@@ -238,6 +270,16 @@ export default function PlatformADashboard() {
           </div>
         </div>
 
+        {seedStatus.message && (
+          <div style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.3)", borderRadius: 8, padding: "10px 16px", marginBottom: 16, color: "#34d399", fontSize: 13 }}>
+            ✓ {seedStatus.message}
+          </div>
+        )}
+        {seedStatus.error && (
+          <div style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 8, padding: "10px 16px", marginBottom: 16, color: "#fca5a5", fontSize: 13 }}>
+            ✗ {seedStatus.error}
+          </div>
+        )}
         {loading ? (
           <div style={{ padding: 40, textAlign: "center", color: "var(--text-muted)" }}>Loading market feed...</div>
         ) : (
@@ -440,3 +482,4 @@ export default function PlatformADashboard() {
     </main>
   );
 }
+

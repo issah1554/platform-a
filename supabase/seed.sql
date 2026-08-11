@@ -1,6 +1,15 @@
--- Platform A Initial Seed Data
--- Populate initial commodity market prices into platform_a_prices
+-- Platform A Seed Data
+-- Run this AFTER applying all migrations
 
+-- NOTE: The morogoro_rice_beans_updated.csv data (178,225 rows) is normalized
+-- into public.platform_a_prices programmatically via the API endpoint:
+-- POST /api/seed-morogoro. This avoids SQL file size limits for large datasets.
+
+-- You can trigger seeding by running:
+--   curl -X POST http://localhost:3001/api/seed-morogoro
+-- or by visiting the Platform A dashboard and clicking "Seed CSV Into Unified Prices".
+
+-- Small static commodity prices for platform_a_prices:
 INSERT INTO public.platform_a_prices (commodity_symbol, price_usd, price_tzs, trade_volume, market_name, price_date)
 VALUES 
     ('MAIZE', 42.50, 110500.00, 1200, 'Dar Es Salaam', '2026-07-29'),
